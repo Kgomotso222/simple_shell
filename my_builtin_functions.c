@@ -20,13 +20,13 @@ int custom_exit(custom_info_t *info)
             custom_puts("Illegal number: ");
             custom_puts(info->argument_vector[1]);
             custom_putchar('\n');
-            return 1;
+            return (1);
         }
         info->error_count = custom_atoi(info->argument_vector[1]);
-        return -2;
+        return (-2);
     }
     info->error_count = -1;
-    return -2;
+    return (-2);
 }
 
 /**
@@ -58,7 +58,7 @@ int custom_cd(custom_info_t *info)
         {
             custom_puts(s);
             custom_putchar('\n');
-            return 1;
+            return (1);
         }
         custom_puts(get_custom_env(info, "OLDPWD="));
         custom_putchar('\n');
@@ -77,7 +77,7 @@ int custom_cd(custom_info_t *info)
         set_custom_env(info, "OLDPWD", get_custom_env(info, "PWD="));
         set_custom_env(info, "PWD", getcwd(buffer, 1024));
     }
-    return 0;
+    return (0);
 }
 
 /**
@@ -95,5 +95,5 @@ int custom_help(custom_info_t *info)
     custom_puts("help call works. Function not yet implemented \n");
     if (0)
         custom_puts(*arg_array); /* temp att_unused workaround */
-    return 0;
+    return (0);
 }

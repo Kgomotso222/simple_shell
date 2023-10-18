@@ -108,97 +108,104 @@ typedef struct custom_builtin
 } custom_builtin_table;
 
 /* my_shell_loop.c */
-int custom_shell(custom_info_t *, char **);
-int identify_builtin_command(custom_info_t *);
-void locate_command(custom_info_t *);
-void execute_command(custom_info_t *);
+int custom_shell(custom_info_t *info, char **av);
+int identify_builtin_command(custom_info_t *info);
+void locate_command(custom_info_t *info);
+void execute_command(custom_info_t *info);
 
 /* my_parser.c */
-int is_custom_command(custom_info_t *, char *);
-char *duplicate_custom_string(char *, int, int);
-char *locate_executable_path(custom_info_t *, char *, char *);
+int is_custom_command(custom_info_t *info, char *path);
+char *duplicate_custom_string(char *pathstr, int start, int stop);
+char *locate_executable_path(custom_info_t *info, char *pathstr, char *cmd);
 
-/* my_custom_shell.c */
-int launch_custom_shell(char **);
+/* my_custom_shell.c
+int launch_custom_shell(char **);*/
 
 /* my_error_handling.c */
-void custom_puts(char *);
-int custom_putchar(char);
+void custom_puts(char *str);
+int custom_putchar(char c);
 int write_to_fd(char c, int fd);
 int write_str_to_fd(char *str, int fd);
 
 /* my_string_operations.c */
-int custom_strlen(char *);
-int compare_custom_strings(char *, char *);
-char *start_with(const char *, const char *);
-char *custom_strcat(char *, char *);
+int custom_strlen(char *s);
+int custom_strcmp(char *s1, char *s2);
+char *custom_starts_with(const char *haystack, const char *needle);
+char *custom_strcat(char *dest, char *src);
 
 /* my_string_operations_1.c */
-char *copy_custom_string(char *, char *);
-char *custom_strdup(const char *);
-void custom_puts(char *);
-int custom_putchar(char);
+char *custom_strcpy(char *dest, char *src);
+char *custom_strdup(const char *str);
+void custom_puts(char *str);
+int custom_putchar(char c);
 
 /* my_exit_handlers.c */
-char *custom_strncpy(char *, char *, int);
-char *custom_strncat(char *, char *, int);
-char *custom_strchr(char *, char);
+char *custom_strncpy(char *dest, char *src, int n);
+char *custom_strncat(char *dest, char *src, int n);
+char *custom_strchr(char *s, char c);
 
 /* my_tokenizer.c */
-char **split_into_words(char *, char *);
-char **split_into_words_2(char *, char);
+char **split_into_words(char *str, char *delimiters);
+char **split_into_words_2(char *str, char delimiter);
+
+/*filer.c*/
+int main(int ac, char **av);
 
 /* my_dynamic_memory.c */
-char *custom_memset(char *, char, unsigned int);
-void custom_free(char **);
-void *custom_realloc(void *, unsigned int, unsigned int);
+char *custom_memset(char *s, char b, unsigned int n);
+void custom_ffree(char **pp);
+void *custom_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* my_memory_operations.c */
-int release_memory(void **);
+int custom_release_memory(void **ptr)
 
 /* my_numeric_operations.c */
-int interactive_custom(custom_info_t *);
-int is_custom_delimiter(char, char *);
-int is_custom_alpha(int);
-int custom_atoi(char *);
+int interactive_custom(custom_info_t *info);
+int is_custom_delimiter(char c, char *delim);
+int custom_is_alpha(int c);
+int custom_atoi(char *s);
 
 /* my_error_handlers.c */
-int custom_error_atoi(char *);
-void display_custom_error(custom_info_t *, char *);
-int print_custom_decimal(int, int);
-char *convert_to_custom_number(long int, int, int);
-void remove_comments(char *);
+int custom_error_atoi(char *s);
+void display_custom_error(custom_info_t *info, char *estr);
+int print_custom_decimal(int input, int fd);
+char *convert_to_custom_number(long int num, int base, int flags);
+void remove_comments(char *buf);
 
 /* my_builtin_functions.c */
-int custom_exit(custom_info_t *);
-int custom_cd(custom_info_t *);
-int custom_help(custom_info_t *);
+int custom_exit(custom_info_t *info);
+int custom_cd(custom_info_t *info);
+int custom_help(custom_info_t *info);
 
 /* my_builtin_functions_1.c */
-int custom_history(custom_info_t *);
-int custom_alias(custom_info_t *);
+int custom_history(custom_info_t *info);
+int set_custom_alias(custom_info_t *info, char *str);
+int unset_custom_alias(custom_info_t *info, char *str);
+int custom_alias(custom_info_t *info);
+int print_custom_alias(custom_list_t *node);
 
 /*my_get_input.c */
-ssize_t get_input_custom(custom_info_t *);
-int custom_getline(custom_info_t *, char **, size_t *);
-void handle_sigint_custom(int);
+ssize_t get_input_custom(custom_info_t *info);
+ssize_t input_buf_custom(custom_info_t *info, char **buf, size_t *len);
+ssize_t custom_getline(custom_info_t *info, char **ptr, size_t *length);
+void handle_sigint_custom(int sig_num);
 
 /* my_info_handler.c */
-void clear_custom_info(custom_info_t *);
-void set_custom_info(custom_info_t *, char **);
-void free_custom_info(custom_info_t *, int);
+void clear_custom_info(custom_info_t *info);
+void set_custom_info(custom_info_t *info, char **av);
+void free_custom_info(custom_info_t *info, int all);
 
 /* my_environment.c */
-char *get_custom_env(custom_info_t *, const char *);
-int custom_env(custom_info_t *);
-int set_custom_env(custom_info_t *);
-int unset_custom_env(custom_info_t *);
-int populate_env_list(custom_info_t *);
+int custom_env(custom_info_t *info);
+char *get_custom_env(custom_info_t *info, const char *name);
+int set_custom_env(custom_info_t *info);
+int unset_custom_env(custom_info_t *info);
+int populate_custom_env_list(custom_info_t *info);
 
 /* my_environment_1.c */
-char **get_custom_environment(custom_info_t *);
-int unset_custom_env(custom_info_t *, char *);
-int set_custom_env(custom_info_t *, char *, char *);
+char **get_custom_environ(custom_info_t *info);
+int unset_custom_env(custom_info_t *info, char *var);
+int set_custom_env(custom_info_t *info, char *var, char *value);
 
 /* my_history.c */
 char *get_custom_history_file(custom_info_t *info);
@@ -208,24 +215,24 @@ int build_custom_history_list(custom_info_t *info, char *buf, int linecount);
 int renumber_custom_history(custom_info_t *info);
 
 /* my_linked_lists.c */
-custom_list_t *add_custom_node(custom_list_t **, const char *, int);
-custom_list_t *add_custom_node_end(custom_list_t **, const char *, int);
-size_t print_custom_list_str(const custom_list_t *);
-int delete_custom_node_at_index(custom_list_t **, unsigned int);
-void custom_free_list(custom_list_t **);
+custom_list_t *add_custom_node(custom_list_t **head, const char *str, int num);
+custom_list_t *add_custom_node_end(custom_list_t **head, const char *str, int num);
+size_t print_custom_list_str(const custom_list_t *head);
+int delete_custom_node_at_index(custom_list_t **head, unsigned int index);
+void custom_free_list(custom_list_t **head_ptr);
 
 /* my_linked_lists_1.c */
-size_t custom_list_length(const custom_list_t *);
-char **custom_list_to_strings(custom_list_t *);
-size_t custom_list_print(const custom_list_t *);
-custom_list_t *custom_node_starts_with(custom_list_t *, char *, char);
-ssize_t get_custom_node_index(custom_list_t *, custom_list_t *);
+size_t custom_list_len(const custom_list_t *h);
+char **custom_list_to_strings(custom_list_t *head);
+size_t custom_print_list(const custom_list_t *h);
+custom_list_t *custom_node_starts_with(custom_list_t *node, char *prefix, char c);
+ssize_t custom_get_node_index(custom_list_t *head, custom_list_t *node);
 
 /* my_variable_substitution.c */
-int is_custom_chain(custom_info_t *, char *, size_t *);
-void handle_custom_chain(custom_info_t *, char *, size_t *, size_t, size_t);
-int custom_alias_substitution(custom_info_t *);
-int custom_variable_substitution(custom_info_t *);
-int custom_string_modification(char **, char *);
+int is_custom_chain(custom_info_t *info, char *buf, size_t *p);
+void handle_custom_chain(custom_info_t *info, char *buf, size_t *p, size_t i, size_t len);
+int custom_alias_substitution(custom_info_t *info);
+int custom_variable_substitution(custom_info_t *info);
+int custom_string_modification(char **old, char *new);
 
 #endif
