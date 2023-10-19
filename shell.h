@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef SHELL_H
+#define SHELL_H
 
 
 #define PRINT(c) (write(STDERR_FILENO, c, _strlen(c)))
